@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+
 def distillation_loss(student_logits, teacher_logits, target, criterion, alpha=0.5, temperature=2.0):
     """
     Apply knowledge distillation loss between student and teacher logits
