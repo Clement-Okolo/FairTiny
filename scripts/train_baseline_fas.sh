@@ -1,6 +1,6 @@
 # #!/bin/bash
-DATASET_DIR=/medailab/medailab/shilab/FairVision
-# DATASET_DIR=/data/home/shim/pyspace/others/pyspace/ICLR_30k/ODIR_Data/ODIR_Data_New_seed10
+DATASET_DIR=/your/path/FairVision
+
 RESULT_DIR=.
 MODEL_TYPE=( vit ) # Options: convnext | mobilevit | deit_small | swin_t | mobilenet | efficientnet | vit | resnet | swin | vgg | resnext | wideresnet | efficientnetv1
 NUM_EPOCH=10
