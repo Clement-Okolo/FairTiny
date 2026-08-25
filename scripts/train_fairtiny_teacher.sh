@@ -4,12 +4,12 @@
 DATASET_DIR=/your/path/FairVision
 RESULT_DIR=.
 
-MODALITY_TYPE='slo_fundus' # Options: 'oct_bscans_3d' | 'slo_fundus'
+MODALITY_TYPE='slo_fundus'
 ATTRIBUTE_TYPE=race # Options: race | gender | hispanic
 
 TEACHER_MODEL_PATH="/your/path/model_best_epoch.pth"
 
-# Hyperparameter search space for distillation and FAS
+# Hyperparameter search space for distillation and FIS
 #DISTILL_ALPHA=( 0.3 0.5 0.7 )
 #DISTILL_TEMP=( 1.0 2.0 4.0 )
 #SCALE_COEF=( 0.3 0.5 0.7 )
@@ -133,7 +133,7 @@ do
                         
                         echo "Running ${MODEL_TYPE[$m]} with alpha=${DISTILL_ALPHA[$a]}, temp=${DISTILL_TEMP[$t]}, fis_coef=${SCALE_COEF[$f]}, lr=${LR[$l]}, bs=${BATCH_SIZE[$b]}"
                         
-                        # FAS group weights - keeping them equal for all groups
+                        # FIS group weights - keeping them equal for all groups
                         SCALE_GROUP_WEIGHT=1.0
                         
                         # Run training with these hyperparameters
