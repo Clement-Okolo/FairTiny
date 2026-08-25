@@ -22,7 +22,7 @@ pip install - r requirements.txt
 ./scripts/train_baseline_distillation.sh
 ```
 
-3. Run the experiments with the baseline models with the proposed fairtiny student configuration, execute:
+3. Run the experiments with the baseline models with the proposed fairtiny student configuration:
 ```
 ./scripts/train_fairtiny_student.sh
 ```
