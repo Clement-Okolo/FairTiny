@@ -1,14 +1,14 @@
 #!/bin/bash
 # Grid search for hyperparameter optimization in fair knowledge distillation
 
-DATASET_DIR=/medailab/medailab/shilab/FairVision
+DATASET_DIR=/your/path/FairVision
 RESULT_DIR=.
 
 MODALITY_TYPE='slo_fundus' # Options: 'oct_bscans_3d' | 'slo_fundus'
 ATTRIBUTE_TYPE=race # Options: race | gender | hispanic
 
 # Path to teacher model - REPLACE WITH YOUR ACTUAL PATH
-TEACHER_MODEL_PATH="/medailab/medailab/clement/FairAdaptiveScaling/scripts/results_harvard10k/dr_slo_fundus_race/ViT-B_slo_fundus_lr1e-4_bz64_seed13_auc0.8480/model_best_epoch.pth"
+TEACHER_MODEL_PATH="/your/path/model_best_epoch.pth"
 
 # Hyperparameter search space for distillation and FIS
 DISTILL_ALPHA=( 0.3 0.5 0.7 )
