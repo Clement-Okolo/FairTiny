@@ -1,17 +1,16 @@
 #!/bin/bash
 # Knowledge distillation for medical imaging
 
-DATASET_DIR=/medailab/medailab/shilab/FairVision
+DATASET_DIR=/your/path/FairVision
 RESULT_DIR=.
 
-MODALITY_TYPE='slo_fundus' # Options: 'oct_bscans_3d' | 'slo_fundus'
+MODALITY_TYPE='slo_fundus' 
 ATTRIBUTE_TYPE=race # Options: race | gender | hispanic
 
 # Path to teacher model
 #TEACHER_MODEL_TYPE= 'ViT-B'
-#TEACHER_MODEL_PATH="/minshi/medailab/clement/FairAdaptiveScaling/scripts/results_harvard10k/dr_slo_fundus_race/ViT-B_slo_fundus_lr1e-4_bz64_seed13_auc0.8480/model_best_epoch.pth"
 
-TEACHER_MODEL_PATH="/medailab/medailab/clement/FairAdaptiveScaling/scripts/results_harvard10k_FAS/dr_slo_fundus_FAS/dr_slo_fundus_race_fAS/ViT-B_slo_fundus_lr1e-4_bz64_seed13_auc0.8532/model_best_epoch.pth"
+TEACHER_MODEL_PATH="/your/path/model_best_epoch.pth"
 
 # Knowledge distillation parameters
 DISTILL_ALPHA=0.5
@@ -111,9 +110,9 @@ if [ ${MODEL_TYPE[$j]} = 'mobilevit' ]; then
 fi
 
 # Run the distillation training
-python train_dr_base_distill.py \
+python train_baseline_distillation.py \
 		--data_dir ${DATASET_DIR}/DR/ \
-		--result_dir ${RESULT_DIR}/results_harvard10k_FAS_distill_test/dr_${MODALITY_TYPE}_${ATTRIBUTE_TYPE[$a]}/${MODEL_TYPE[$j]}_${MODALITY_TYPE}_lr${LR}_bz${BATCH_SIZE}_alpha${DISTILL_ALPHA}_temp${DISTILL_TEMP} \
+		--result_dir ${RESULT_DIR}/results_harvard10k_FAS_distill/dr_${MODALITY_TYPE}_${ATTRIBUTE_TYPE[$a]}/${MODEL_TYPE[$j]}_${MODALITY_TYPE}_lr${LR}_bz${BATCH_SIZE}_alpha${DISTILL_ALPHA}_temp${DISTILL_TEMP} \
 		--model_type ${MODEL_TYPE[$j]} \
 		--image_size 224 \
 		--lr ${LR} --weight-decay ${WD} --momentum 0.1 \
