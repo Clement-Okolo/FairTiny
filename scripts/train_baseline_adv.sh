@@ -1,8 +1,6 @@
 #!/bin/bash
-# DATASET_DIR=/data/home/shim/pyspace/others/pyspace/ICLR_30k/ODIR_Data/ODIR_Data_New_seed10
-# RESULT_DIR=/data/home/shim/pyspace/others/pyspace/ICLR_30k/Harvard-DR30k_results
 
-DATASET_DIR=/medailab/medailab/shilab/FairVision
+DATASET_DIR=/your/path/FairVision
 RESULT_DIR=.
 
 MODEL_TYPE=( efficientnet ) # Options: convnext | mobilevit | deit_small | swin_t | mobilenet | efficientnet | vit | resnet | swin | vgg | resnext | wideresnet | efficientnetv1
@@ -111,7 +109,7 @@ fi
 
 PERF_FILE=${MODEL_TYPE[$j]}_${MODALITY_TYPE}_${ATTRIBUTE_TYPE[$a]}_adv.csv
 
-python train_dr_fair_adv.py \
+python train_baseline_adv.py \
 		--data_dir ${DATASET_DIR}/DR/ \
 		--result_dir ${RESULT_DIR}/results_harvard10k/dr_slo_fundus_adversarial/dr_${MODALITY_TYPE}_${ATTRIBUTE_TYPE[$a]}/${MODEL_TYPE[$j]}_${MODALITY_TYPE}_lr${LR}_bz${BATCH_SIZE}_adv \
 		--model_type ${MODEL_TYPE[$j]} \
