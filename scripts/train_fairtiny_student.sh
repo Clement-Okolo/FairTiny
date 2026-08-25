@@ -113,7 +113,7 @@ do
                         SCALE_GROUP_WEIGHT=1.0
                         
                         # Run training with these hyperparameters
-                        python train_dr_fair_distill_fis.py \
+                        python train_distill_do.py \
                             --data_dir ${DATASET_DIR}/DR/ \
                             --result_dir ${RUN_DIR} \
                             --model_type ${MODEL_TYPE[$m]} \
