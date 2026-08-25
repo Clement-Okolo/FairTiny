@@ -4,7 +4,7 @@
 DATASET_DIR=/your/path/FairVision
 RESULT_DIR=.
 
-MODALITY_TYPE='slo_fundus' # Options: 'oct_bscans_3d' | 'slo_fundus'
+MODALITY_TYPE='slo_fundus'
 ATTRIBUTE_TYPE=race # Options: race | gender | hispanic
 
 # Path to teacher model - REPLACE WITH YOUR ACTUAL PATH
