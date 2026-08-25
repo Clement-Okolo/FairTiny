@@ -30,6 +30,7 @@ pip install - r requirements.txt
 4. Run the experiments with the baseline models with the proposed fairtiny teacher configuration:
 
     (a.) Train a fair ViT-B teacher:
+
 ```
 ./scripts/train_baseline_fas.sh
 ```
