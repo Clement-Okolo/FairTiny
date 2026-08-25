@@ -44,16 +44,9 @@ def bootstrap(preds, gts, repeat_times=10, random_state=0, n_samples=100):
     return bootstrap_aucs
 
 
-#input_npz_1 = 'student+fairTiny'
-#input_npz_2 = 'baseline'
+input_npz_1 = r'/your/path/pred_gt_best_epoch.npz'            # fairTiny-student
+input_npz_2 = r'/your/path/mobilenet-pred_gt_best_epoch.npz'  # baseline
 
-input_npz_1 = r'/medailab/medailab/clement/FairAdaptiveScaling/scripts/results_harvard10k_student+FAS/dr_slo_fundus_FAS/dr_slo_fundus_race_fAS/mobilenet_slo_fundus_lr1e-4_bz10_seed13_auc0.7682/pred_gt_best_epoch.npz'
-input_npz_2 = r'/medailab/medailab/clement/FairAdaptiveScaling/scripts/results_harvard10k/dr_slo_fundus_race/mobilenet-pred_gt_best_epoch.npz'
-
-# densenet-pred_gt_best_epoch.npz
-# efficientnet-pred_gt_best_epoch.npz
-# mobilenet-pred_gt_best_epoch.npz
-# resnet-pred_gt_best_epoch.npz
 
 repeat_times = [100, 1000, 2000, 3000, 4000, 5000]
 # n_samples = 2000
