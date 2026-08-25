@@ -133,11 +133,11 @@ do
                         
                         echo "Running ${MODEL_TYPE[$m]} with alpha=${DISTILL_ALPHA[$a]}, temp=${DISTILL_TEMP[$t]}, fis_coef=${SCALE_COEF[$f]}, lr=${LR[$l]}, bs=${BATCH_SIZE[$b]}"
                         
-                        # FIS group weights - keeping them equal for all groups
+                        # FAS group weights - keeping them equal for all groups
                         SCALE_GROUP_WEIGHT=1.0
                         
                         # Run training with these hyperparameters
-                        python train_dr_fair_distill_fis.py \
+                        python train_distill_do.py \
                             --data_dir ${DATASET_DIR}/DR/ \
                             --result_dir ${RUN_DIR} \
                             --model_type ${MODEL_TYPE[$m]} \
