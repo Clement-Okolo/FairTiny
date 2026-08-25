@@ -16,7 +16,7 @@ from sklearn.model_selection import KFold
 from sklearn.utils import *
 
 import sys
-sys.path.append('/medailab/medailab/clement/FairAdaptiveScaling')
+sys.path.append('/your/path/FairAdaptiveScaling')
 
 from src.modules import *
 from src.data_handler import *
