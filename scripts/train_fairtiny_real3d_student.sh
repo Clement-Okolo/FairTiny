@@ -31,15 +31,8 @@ CONV_TYPE=Conv3d
 NUM_EPOCH=20
 NEED_BALANCE=false
 
-# one initial FIS weight per group of the attribute
+# FIS group weights - keeping them equal for all groups (as in the 2D FairTiny scripts)
 SCALE_GROUP_WEIGHT=1.0
-case ${ATTRIBUTE_TYPE} in
-    "race")     N_GROUPS=3 ;;
-    "gender")   N_GROUPS=2 ;;
-    "hispanic") N_GROUPS=2 ;;
-    *)          N_GROUPS=3 ;;
-esac
-GROUP_WEIGHTS=$(for (( k=0; k<N_GROUPS; k++ )); do printf "%s " ${SCALE_GROUP_WEIGHT}; done)
 
 if [ ! -f "${TEACHER_MODEL_PATH}" ]; then
     echo "Teacher checkpoint not found: ${TEACHER_MODEL_PATH}"
@@ -98,7 +91,7 @@ do
             --distill_alpha ${DISTILL_ALPHA[$a]} \
             --distill_temp ${DISTILL_TEMP[$t]} \
             --fair_scaling_coef ${SCALE_COEF[$f]} \
-            --fair_scaling_group_weights ${GROUP_WEIGHTS} > ${LOG_FILE} 2>&1
+            --fair_scaling_group_weights ${SCALE_GROUP_WEIGHT} ${SCALE_GROUP_WEIGHT} ${SCALE_GROUP_WEIGHT} > ${LOG_FILE} 2>&1
 
         echo "[GPU ${GPUS[$g]}] done  ${MODEL_TYPE[$m]} (exit code $?)"
     done    # end of batch-size loop
