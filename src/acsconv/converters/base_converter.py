@@ -41,6 +41,10 @@ class BaseConverter(object):
                     if 'adaptive' in child.__class__.__name__.lower():
                         for k in kwargs.keys():
                             kwargs[k] = _triple_same(kwargs[k])
+                    # newer PyTorch: LayerNorm/BatchNorm take a boolean `bias` argument, but getattr(child, 'bias')
+                    # returns the bias tensor (or None) -> pass whether the module has a bias instead
+                    if 'bias' in kwargs and not isinstance(kwargs['bias'], bool):
+                        kwargs['bias'] = kwargs['bias'] is not None
                     setattr(module, child_name, TargetClass(**kwargs))
                 else:
                     raise Exception('No corresponding module in 3D for 2d module {}'.format(child.__class__.__name__))
