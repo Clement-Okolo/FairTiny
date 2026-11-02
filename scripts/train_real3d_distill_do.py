@@ -40,12 +40,8 @@ from fairlearn.metrics import *
 
 from src.utils.utils import model_to_syncbn, Transform3D
 from src.acsconv.converters import ACSConverter, Conv3dConverter, Conv2_5dConverter
-from src.models_3d import ResNet18, ResNet50, VGG16, DenseNet121, ConvNeXt_Base, UNet
 
-# same model choices as train_dr_fair_real3d.py
-# ImageNet-pretrained (src/modules.py create_model): mobilenet efficientnet densenet resnet vgg
-# trained from scratch (src/models_3d.py):          resnet18 resnet50 vgg16 densenet121 convnext_base unet
-MODEL_TYPE_HELP = 'mobilenet|efficientnet|densenet|resnet|vgg|resnet18|resnet50|vgg16|densenet121|convnext_base|unet'
+SUPPORTED_3D_MODELS = ['mobilenet', 'efficientnet', 'densenet', 'resnet', 'vgg']
 
 
 class Dataset_Info(NamedTuple):
@@ -72,7 +68,7 @@ parser.add_argument('--seed', default=13, type=int)
 parser.add_argument('--pretrained-weights', default='', type=str, help='resume from a checkpoint of this script')
 parser.add_argument('--result_dir', default='./results', type=str)
 parser.add_argument('--data_dir', default='.', type=str)
-parser.add_argument('--model_type', default='mobilenet', type=str, help=MODEL_TYPE_HELP)
+parser.add_argument('--model_type', default='mobilenet', type=str, help='|'.join(SUPPORTED_3D_MODELS))
 parser.add_argument('--task', default='cls', type=str)
 parser.add_argument('--image_size', default=224, type=int)
 parser.add_argument('--loss_type', default='bce', type=str)
@@ -91,7 +87,7 @@ parser.add_argument('--shape_transform', action='store_true')
 # knowledge distillation
 parser.add_argument('--teacher_model_path', type=str, required=True,
                     help='model_best_epoch.pth from train_dr_fair_real3d.py or train_dr_fair_real3d_fis.py')
-parser.add_argument('--teacher_model_type', type=str, required=True, help=MODEL_TYPE_HELP)
+parser.add_argument('--teacher_model_type', type=str, required=True, help='|'.join(SUPPORTED_3D_MODELS))
 parser.add_argument('--teacher_conv_type', type=str, default=None,
                     help='conv type the teacher was trained with (default: same as --conv_type)')
 parser.add_argument('--distill_alpha', type=float, default=0.5,
@@ -140,29 +136,14 @@ def densenet_forward_3d(self, x):
 
 
 def build_3d_model(model_type, out_dim, conv_type='Conv3d', pretrained_3d='i3d'):
-    # same branches as train_dr_fair_real3d.py
-    if model_type == 'resnet18':
-        model = ResNet18(in_channels=1, num_classes=out_dim)
-    elif model_type == 'resnet50':
-        model = ResNet50(in_channels=1, num_classes=out_dim)
-    elif model_type == 'vgg16':
-        model = VGG16(in_channels=1, num_classes=out_dim)
-    elif model_type == 'densenet121':
-        model = DenseNet121(in_channels=1, num_classes=out_dim)
-    elif model_type == 'convnext_base':
-        model = ConvNeXt_Base(in_channels=1, num_classes=out_dim)
-    elif model_type == 'unet':
-        model = UNet(in_channels=1, num_classes=out_dim)
-    elif model_type in ['efficientnet', 'resnet', 'vgg']:
-        model = create_model(model_type=model_type, in_dim=1, out_dim=out_dim)  # ImageNet-pretrained 2D model
-    elif model_type == 'mobilenet':
-        model = create_model(model_type='mobilenet', in_dim=1, out_dim=out_dim)
+    if model_type not in SUPPORTED_3D_MODELS:
+        raise NotImplementedError(f'{model_type} is not supported for oct_bscans_3d; use one of {SUPPORTED_3D_MODELS}')
+
+    model = create_model(model_type=model_type, in_dim=1, out_dim=out_dim)  # ImageNet-pretrained 2D model
+    if model_type == 'mobilenet':
         model.forward = types.MethodType(mobilenet_forward_3d, model)
     elif model_type == 'densenet':
-        model = create_model(model_type='densenet', in_dim=1, out_dim=out_dim)
         model.forward = types.MethodType(densenet_forward_3d, model)
-    else:
-        raise NotImplementedError(f'{model_type} is not supported for oct_bscans_3d ({MODEL_TYPE_HELP})')
 
     if conv_type == 'ACSConv':
         model = model_to_syncbn(ACSConverter(model))

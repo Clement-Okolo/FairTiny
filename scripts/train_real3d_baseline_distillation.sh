@@ -15,11 +15,11 @@ LOG_DIR=${RESULT_DIR}/logs_real3d_baseline_distill
 mkdir -p ${LOG_DIR}
 
 # ---- teacher (EDIT THESE) ---------------------------------------------------------------
-TEACHER_MODEL_TYPE=resnet   # mobilenet | efficientnet | densenet | resnet | vgg | resnet18 | resnet50 | vgg16 | densenet121 | convnext_base | unet
+TEACHER_MODEL_TYPE=resnet   # mobilenet | efficientnet | densenet | resnet | vgg
 TEACHER_MODEL_PATH="/path/to/results_OCT_3D/.../dr_oct_bscans_3d_race_resnet_Conv3d_..._seed13_aucX.XXXX/model_best_epoch.pth"
 # -----------------------------------------------------------------------------------------
 
-MODEL_TYPE=( mobilenet efficientnet densenet resnet vgg )   # students. Options: mobilenet efficientnet densenet resnet vgg resnet18 resnet50 vgg16 densenet121 convnext_base unet
+MODEL_TYPE=( mobilenet efficientnet densenet resnet vgg )   # students
 GPUS=( 0 1 4 )
 
 MODALITY_TYPE='oct_bscans_3d'
