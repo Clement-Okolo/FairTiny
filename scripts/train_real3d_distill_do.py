@@ -223,10 +223,16 @@ def train_distill_with_fis(model, teacher_model, optimizer, scaler, loader, epoc
     else:
         hard_criterion = nn.CrossEntropyLoss(reduction='none')
 
+    # BatchNorm running statistics (and other buffers) change on every forward pass in train mode;
+    # keep a copy so a skipped NaN/inf batch cannot leave NaN in them (which would break validation)
+    buffers = [b for b in model.buffers() if b.is_floating_point()]
+
     t1 = time.time()
     for i, (input, target, attr) in enumerate(loader):
         input = input.to(device)
         target = target.to(device)
+
+        saved_buffers = [b.detach().clone() for b in buffers]
 
         with torch.cuda.amp.autocast():
             student_pred = model(input)
@@ -236,6 +242,9 @@ def train_distill_with_fis(model, teacher_model, optimizer, scaler, loader, epoc
             if not torch.isfinite(student_pred).all():
                 skipped += 1
                 print(f'epoch {epoch} iter {i}: student output is NaN/inf, skipping this batch', flush=True)
+                with torch.no_grad():
+                    for b, saved in zip(buffers, saved_buffers):
+                        b.copy_(saved)
                 optimizer.zero_grad()
                 continue
 
